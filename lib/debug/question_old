@@ -1,0 +1,142 @@
+const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Iconsax.bubble,
+                      size: 20,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Question 1',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Iconsax.clock_1,
+                      size: 20,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      '01:05:50',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.black.withOpacity(.1)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Question : ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Expanded(
+                                    child: SelectableText(
+                                      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae cum exercitationem corrupti, incidunt eaque, cumque nostrum eveniet totam deleniti autem recusandae earum voluptatum non tempore architecto? Accusantium laudantium facilis consequatur.',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Options : ',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      OptionRow(
+                                        index: '1',
+                                        text: 'Lorem ipsum dolor sit amet',
+                                      ),
+                                      OptionRow(
+                                        index: '2',
+                                        text: 'Lorem ipsum dolor sit amet',
+                                      ),
+                                      OptionRow(
+                                        index: '3',
+                                        text: 'Lorem ipsum dolor sit amet',
+                                      ),
+                                      OptionRow(
+                                        index: '4',
+                                        text: 'Lorem ipsum dolor sit amet',
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.black.withOpacity(.1)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          children: [
+                            OptionBox(
+                              index: '1',
+                            ),
+                            OptionBox(
+                              index: '2',
+                            ),
+                            OptionBox(
+                              index: '3',
+                            ),
+                            OptionBox(
+                              index: '4',
+                            ),
+                          ],
+                        ),
+                      )),
+                ],
+              ),
+            ),
