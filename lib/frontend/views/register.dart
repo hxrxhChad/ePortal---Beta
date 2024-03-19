@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +8,9 @@ import '../../utils/index.dart';
 import '../widgets/index.dart';
 
 class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+  RegisterView({super.key});
+
+  Routes route = Routes();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +121,19 @@ class RegisterView extends StatelessWidget {
               const VGap(height: 40),
               AuthButton(
                   label: 'Sign up',
-                  onTap: () => context.read<AuthCubit>().register(),
+                  onTap: () async {
+                    await context.read<AuthCubit>().register();
+                    debugPrint('${state.admin} is the admin value');
+                    if (state.status == Status.success) {
+                      if (state.admin == 'Admin') {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.adminHome);
+                      } else if (state.admin == 'Candidate / Student') {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.studentHome);
+                      }
+                    }
+                  },
                   outlined: false),
             ],
           ),

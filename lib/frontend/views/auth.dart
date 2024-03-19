@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,13 +9,15 @@ import '../widgets/index.dart';
 import 'index.dart';
 
 class AuthView extends StatelessWidget {
-  const AuthView({super.key});
+  AuthView({super.key});
+
+  Routes route = Routes();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state.authId != '' || state.status == Status.success) {
+        if (state.status == Status.success) {
           if (state.admin == 'Admin') {
             Navigator.pushReplacementNamed(context, Routes.adminHome);
           } else if (state.admin == 'Candidate / Student') {
@@ -62,20 +66,35 @@ class AuthView extends StatelessWidget {
                         hintText: 'Email Address',
                       ),
                       const VGap(height: 10),
-                      AuthField(
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: false,
-                        onChanged: (x) =>
-                            context.read<AuthCubit>().setPassword(x),
-                        initialValue: context.read<AuthCubit>().password,
-                        eye: true,
-                        onTap: () {},
-                        hintText: 'Password',
+                      BlocBuilder<EyeCubit, bool>(
+                        builder: (context, state) {
+                          return AuthField(
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: state,
+                            onChanged: (x) =>
+                                context.read<AuthCubit>().setPassword(x),
+                            initialValue: context.read<AuthCubit>().password,
+                            eye: true,
+                            onTap: () =>
+                                context.read<EyeCubit>().setEye(!state),
+                            hintText: 'Password',
+                          );
+                        },
                       ),
                       const VGap(height: 20),
                       AuthButton(
                           label: 'Sign in',
-                          onTap: () => context.read<AuthCubit>().login(),
+                          onTap: () async {
+                            await context.read<AuthCubit>().login();
+                            debugPrint('${state.admin} is the admin value');
+                            if (state.admin == 'Admin') {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.adminHome);
+                            } else if (state.admin == 'Candidate / Student') {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.studentHome);
+                            }
+                          },
                           outlined: false),
                       const VGap(height: 10),
                       AuthButton(
@@ -85,7 +104,7 @@ class AuthView extends StatelessWidget {
                               context: context,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(3)),
-                              builder: (context) => const RegisterView()),
+                              builder: (context) => RegisterView()),
                           outlined: true),
                     ],
                   ),

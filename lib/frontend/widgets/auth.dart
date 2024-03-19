@@ -26,54 +26,50 @@ class AuthField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EyeCubit, bool>(
-      builder: (context, state) {
-        return TextFormField(
-          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-          onChanged: onChanged,
-          cursorHeight: 15,
-          textAlignVertical: TextAlignVertical.center,
-          keyboardType: keyboardType,
-          autocorrect: false,
-          obscureText: state,
-          cursorColor: Theme.of(context).disabledColor,
-          decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: TextStyle(
-                  color: Theme.of(context).iconTheme.color!.withOpacity(.5)),
-              contentPadding: const EdgeInsets.only(
-                  left: 10, top: 12, right: 10, bottom: 12),
-              suffixIcon: GestureDetector(
-                onTap: () => context.read<EyeCubit>().setEye(!state),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Icon(
-                    eye
-                        ? state
-                            ? Iconsax.eye
-                            : Iconsax.eye_slash
-                        : null,
-                    size: 18,
-                    color: Theme.of(context).iconTheme.color!.withOpacity(.5),
-                  ),
-                ),
+    return TextFormField(
+      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+      onChanged: onChanged,
+      cursorHeight: 15,
+      textAlignVertical: TextAlignVertical.center,
+      keyboardType: keyboardType,
+      autocorrect: false,
+      obscureText: obscureText,
+      cursorColor: Theme.of(context).disabledColor,
+      decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+              color: Theme.of(context).iconTheme.color!.withOpacity(.5)),
+          contentPadding:
+              const EdgeInsets.only(left: 10, top: 12, right: 10, bottom: 12),
+          suffixIcon: GestureDetector(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Icon(
+                eye
+                    ? obscureText
+                        ? Iconsax.eye
+                        : Iconsax.eye_slash
+                    : null,
+                size: 18,
+                color: Theme.of(context).iconTheme.color!.withOpacity(.5),
               ),
-              constraints: const BoxConstraints(maxWidth: 300, maxHeight: 40),
-              fillColor: Theme.of(context).iconTheme.color!.withOpacity(.04),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(3),
-                  borderSide:
-                      // BorderSide(color: Theme.of(context).iconTheme.color!),
-                      BorderSide.none),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(3),
-                borderSide: BorderSide(
-                    width: 2,
-                    color: Theme.of(context).iconTheme.color!.withOpacity(.1)),
-              ),
-              filled: true),
-        );
-      },
+            ),
+          ),
+          constraints: const BoxConstraints(maxWidth: 300, maxHeight: 40),
+          fillColor: Theme.of(context).iconTheme.color!.withOpacity(.04),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(3),
+              borderSide:
+                  // BorderSide(color: Theme.of(context).iconTheme.color!),
+                  BorderSide.none),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(3),
+            borderSide: BorderSide(
+                width: 2,
+                color: Theme.of(context).iconTheme.color!.withOpacity(.1)),
+          ),
+          filled: true),
     );
   }
 }

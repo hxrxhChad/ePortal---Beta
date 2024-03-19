@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
 import 'package:board_datetime_picker/board_datetime_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
+import 'package:iconsax/iconsax.dart';
 
+import '../../backend/models/index.dart';
 import '../../backend/state management/index.dart';
 import '../widgets/index.dart';
 
@@ -36,6 +39,25 @@ class AddTestView extends StatelessWidget {
           child: BlocConsumer<TestCubit, TestState>(
             listener: (context, state) {},
             builder: (context, state) {
+              List<TestModel> currentTest = state.testModel
+                  .where((test) => test.testId == state.testId)
+                  .toList();
+
+              List<QuestionModel> currentQuestionList = state.questionModel
+                  .where((question) => question.testId == state.testId)
+                  .toList();
+
+              List<QuestionModel> currentQuestion = state.questionModel
+                  .where((question) => question.questionId == state.questionId)
+                  .toList();
+
+              List<OptionModel> currentOptionList = state.optionModel
+                  .where((option) => option.questionId == state.questionId)
+                  .toList();
+              List<OptionModel> currentoption = state.optionModel
+                  .where((option) => option.optionId == state.optionId)
+                  .toList();
+
               return Column(
                 children: [
                   const VGap(height: 30),
@@ -60,7 +82,9 @@ class AddTestView extends StatelessWidget {
                                 context.read<TestCubit>().setTestName(x);
                                 debugPrint(x);
                               },
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testName!
+                                  : '',
                               controller: testNameController,
                             ),
                             const VGap(height: 30),
@@ -72,7 +96,9 @@ class AddTestView extends StatelessWidget {
                                 context.read<TestCubit>().setTestCode(x);
                                 debugPrint(x);
                               },
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testCode!
+                                  : '',
                               controller: testCodeController,
                             ),
                             const VGap(height: 30),
@@ -84,7 +110,9 @@ class AddTestView extends StatelessWidget {
 
                                 debugPrint(x);
                               },
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testDescription!
+                                  : '',
                               controller: testDescriptionController,
                             ),
                             const VGap(height: 30),
@@ -146,11 +174,15 @@ class AddTestView extends StatelessWidget {
                             SizedBox(
                               width: 300,
                               child: AuthButtonSmall(
-                                  label: state.testDate != 0
+                                  label: currentTest.isNotEmpty
                                       ? DateTime.fromMillisecondsSinceEpoch(
-                                              state.testDate)
+                                              currentTest[0].testDate!)
                                           .toString()
-                                      : DateTime.now().toString(),
+                                      : state.testDate != 0
+                                          ? DateTime.fromMillisecondsSinceEpoch(
+                                                  state.testDate)
+                                              .toString()
+                                          : DateTime.now().toString(),
                                   onTap: () async {
                                     final result =
                                         await showBoardDateTimePicker(
@@ -178,7 +210,9 @@ class AddTestView extends StatelessWidget {
                               onChanged: (x) => context
                                   .read<TestCubit>()
                                   .setTestEligibility(x),
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testEligibilityDetails!
+                                  : '',
                               controller: testEligibilityController,
                             ),
                             const VGap(height: 30),
@@ -188,7 +222,9 @@ class AddTestView extends StatelessWidget {
                               hintText: '',
                               onChanged: (x) =>
                                   context.read<TestCubit>().setTestSyllabus(x),
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testSyllabus!
+                                  : '',
                               controller: testSyllabusController,
                             ),
                             const VGap(height: 30),
@@ -199,7 +235,9 @@ class AddTestView extends StatelessWidget {
                               onChanged: (x) => context
                                   .read<TestCubit>()
                                   .setTestAnswerSheet(x),
-                              initialValue: '',
+                              initialValue: currentTest.isNotEmpty
+                                  ? currentTest[0].testAnswerSheet!
+                                  : '',
                               controller: answerSheetController,
                             ),
                             const VGap(height: 30),
@@ -212,11 +250,15 @@ class AddTestView extends StatelessWidget {
                             SizedBox(
                               width: 300,
                               child: AuthButtonSmall(
-                                  label: state.testDate != 0
+                                  label: currentTest.isNotEmpty
                                       ? DateTime.fromMillisecondsSinceEpoch(
-                                              state.testDate)
+                                              currentTest[0].testDate!)
                                           .toString()
-                                      : DateTime.now().toString(),
+                                      : state.testDate != 0
+                                          ? DateTime.fromMillisecondsSinceEpoch(
+                                                  state.testDate)
+                                              .toString()
+                                          : DateTime.now().toString(),
                                   onTap: () async {
                                     final result =
                                         await showBoardDateTimePicker(
@@ -250,7 +292,8 @@ class AddTestView extends StatelessWidget {
                                         context.read<TestCubit>().setTest(),
                                     outlined: false),
                               ],
-                            )
+                            ),
+                            const VGap(height: 300),
                           ],
                         ),
                       ),
@@ -302,7 +345,11 @@ class AddTestView extends StatelessWidget {
                                                 onChanged: (x) => context
                                                     .read<TestCubit>()
                                                     .setQuestionText(x),
-                                                initialValue: '',
+                                                initialValue:
+                                                    currentQuestion.isNotEmpty
+                                                        ? currentQuestion[0]
+                                                            .questionText!
+                                                        : '',
                                                 controller:
                                                     questionTextController),
                                             const VGap(height: 20),
@@ -317,7 +364,11 @@ class AddTestView extends StatelessWidget {
                                                 onTap: () => context
                                                     .read<TestCubit>()
                                                     .addQuestionImage(),
-                                                image: state.questionImage),
+                                                image:
+                                                    currentQuestion.isNotEmpty
+                                                        ? currentQuestion[0]
+                                                            .questionImage!
+                                                        : state.questionImage),
                                             const VGap(height: 20),
                                             TestField(
                                                 label:
@@ -327,7 +378,12 @@ class AddTestView extends StatelessWidget {
                                                     .read<TestCubit>()
                                                     .setQuestionIndex(
                                                         int.parse(x)),
-                                                initialValue: '1',
+                                                initialValue:
+                                                    currentQuestion.isNotEmpty
+                                                        ? currentQuestion[0]
+                                                            .questionIndex!
+                                                            .toString()
+                                                        : '',
                                                 controller:
                                                     questionIndexController),
                                             const VGap(height: 30),
@@ -343,7 +399,13 @@ class AddTestView extends StatelessWidget {
                                                         .read<TestCubit>()
                                                         .setQuestionMarks(
                                                             double.parse(x)),
-                                                    initialValue: '',
+                                                    initialValue:
+                                                        currentQuestion
+                                                                .isNotEmpty
+                                                            ? currentQuestion[0]
+                                                                .questionMarks!
+                                                                .toString()
+                                                            : '',
                                                     controller:
                                                         marksController),
                                                 const HGap(width: 30),
@@ -355,7 +417,13 @@ class AddTestView extends StatelessWidget {
                                                         .read<TestCubit>()
                                                         .setNegativeMarks(
                                                             double.parse(x)),
-                                                    initialValue: '',
+                                                    initialValue:
+                                                        currentQuestion
+                                                                .isNotEmpty
+                                                            ? currentQuestion[0]
+                                                                .negativeMarks!
+                                                                .toString()
+                                                            : '',
                                                     controller:
                                                         negativeMarksController),
                                               ],
@@ -374,10 +442,11 @@ class AddTestView extends StatelessWidget {
                                                 // HGap(width: 50),
                                                 AuthButtonSmall(
                                                     label: 'Submit',
-                                                    onTap: () {
-                                                      context
+                                                    onTap: () async {
+                                                      await context
                                                           .read<TestCubit>()
-                                                          .setOption();
+                                                          .setQuestion();
+                                                      Navigator.pop(context);
                                                     },
                                                     outlined: false),
                                               ],
@@ -392,22 +461,112 @@ class AddTestView extends StatelessWidget {
                               ),
                               outlined: false,
                             ),
+                            const VGap(height: 30),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: currentQuestionList.isNotEmpty
+                                  ? currentQuestionList.length
+                                  : 0,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (currentQuestionList.isNotEmpty) {
+                                  currentQuestionList.sort((a, b) {
+                                    // Handle nullable integers using null-aware operators
+                                    final indexA = a.questionIndex ?? 0;
+                                    final indexB = b.questionIndex ?? 0;
+                                    return indexA.compareTo(indexB);
+                                  });
+                                  return GestureDetector(
+                                    onTap: () => context
+                                        .read<TestCubit>()
+                                        .setQuestionId(
+                                            currentQuestionList[index]
+                                                .questionId!),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 30),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.black12
+                                                  .withOpacity(.1)),
+                                          borderRadius:
+                                              BorderRadius.circular(3)),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 10,
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: Colors.black12
+                                                        .withOpacity(.1))),
+                                            child: Center(
+                                              child: Text(
+                                                currentQuestionList[index]
+                                                    .questionIndex!
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                          const HGap(width: 30),
+                                          Expanded(
+                                            child: Text(
+                                              currentQuestionList[index]
+                                                  .questionText!,
+                                              style: const TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                          const HGap(width: 20),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Iconsax.edit,
+                                                size: 17,
+                                              )),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                CupertinoIcons.delete,
+                                                size: 17,
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                            const VGap(height: 300),
                           ],
                         ),
                       ),
+                      const HGap(width: 70),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Question no. 1',
-                              style: TextStyle(
+                            Text(
+                              'Question no. ${currentQuestion.isNotEmpty ? currentQuestion[0].questionIndex!.toString() : '...'} ',
+                              style: const TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.w600),
                             ),
                             const VGap(height: 10),
-                            const SelectableText(
-                                'I ve written a few thousand words on why traditional “semantic class names” are the reason CSS is hard to maintain, but the truth is you’re never going to believe me until you actually try it. If you can suppress the urge to retch long enough to give it a chance,'),
+                            SelectableText(currentQuestion.isNotEmpty
+                                ? currentQuestion[0].questionText!
+                                : ''),
                             const VGap(height: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -452,7 +611,11 @@ class AddTestView extends StatelessWidget {
                                                     onChanged: (x) => context
                                                         .read<TestCubit>()
                                                         .setOptionText(x),
-                                                    initialValue: '',
+                                                    initialValue:
+                                                        currentoption.isNotEmpty
+                                                            ? currentoption[0]
+                                                                .optionText!
+                                                            : '',
                                                     controller:
                                                         optionTextController),
                                                 const VGap(height: 20),
@@ -468,7 +631,11 @@ class AddTestView extends StatelessWidget {
                                                     onTap: () => context
                                                         .read<TestCubit>()
                                                         .addOptionImage(),
-                                                    image: ''),
+                                                    image:
+                                                        currentoption.isNotEmpty
+                                                            ? currentoption[0]
+                                                                .optionImage!
+                                                            : ''),
                                                 const VGap(height: 30),
                                                 GroupButton(
                                                   enableDeselect: true,
@@ -527,7 +694,96 @@ class AddTestView extends StatelessWidget {
                                     onTap: () {},
                                     outlined: false)
                               ],
-                            )
+                            ),
+                            const VGap(
+                              height: 30,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: currentOptionList.isNotEmpty
+                                  ? currentOptionList.length
+                                  : 0,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (currentOptionList.isNotEmpty) {
+                                  currentOptionList.sort((a, b) {
+                                    // Handle nullable integers using null-aware operators
+                                    final indexA = a.optionIndex ?? 0;
+                                    final indexB = b.optionIndex ?? 0;
+                                    return indexA.compareTo(indexB);
+                                  });
+                                  return GestureDetector(
+                                    onTap: () => context
+                                        .read<TestCubit>()
+                                        .setQuestionId(currentOptionList[index]
+                                            .questionId!),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 10),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.black12
+                                                  .withOpacity(.1)),
+                                          borderRadius:
+                                              BorderRadius.circular(3)),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 10,
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                    color: Colors.black12
+                                                        .withOpacity(.1))),
+                                            child: Center(
+                                              child: Text(
+                                                currentOptionList[index]
+                                                    .optionIndex!
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                          const HGap(width: 30),
+                                          Expanded(
+                                            child: Text(
+                                              currentOptionList[index]
+                                                  .optionText!,
+                                              style: const TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                          const HGap(width: 20),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Iconsax.edit,
+                                                size: 17,
+                                              )),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                CupertinoIcons.delete,
+                                                size: 17,
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                            const VGap(height: 300),
                           ],
                         ),
                       )

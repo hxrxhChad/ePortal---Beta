@@ -38,8 +38,9 @@ class TestField extends StatelessWidget {
           cursorHeight: 15,
           textAlignVertical: TextAlignVertical.center,
           keyboardType: TextInputType.text,
+          initialValue: initialValue,
           autocorrect: false,
-          controller: controller,
+          // controller: controller,
           cursorColor: Theme.of(context).disabledColor,
           decoration: InputDecoration(
             hintText: hintText,

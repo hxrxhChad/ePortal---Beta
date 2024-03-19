@@ -13,11 +13,54 @@ class Routes {
   static const message = '/message';
   static const setting = '/setting';
 
+  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  // Future<dynamic> navigateTo(String routeName, {Object? arguments}) {
+  //   return navigatorKey.currentState!
+  //       .pushNamed(routeName, arguments: arguments);
+  // }
+
+  // void goBack() {
+  //   return navigatorKey.currentState!.pop();
+  // }
+
+  // void popUntil(String routeName) {
+  //   navigatorKey.currentState!.popUntil(ModalRoute.withName(routeName));
+  // }
+
+  // void replaceWith(String routeName, {Object? arguments}) {
+  //   navigatorKey.currentState!
+  //       .pushReplacementNamed(routeName, arguments: arguments);
+  // }
+
+  // Route<dynamic> generateRoute(RouteSettings settings) {
+  //   debugPrint('generateRoute: ${settings.name}');
+  //   switch (settings.name) {
+  //     case initial:
+  //       return _getPageRoute(AuthView());
+  //     case adminHome:
+  //       return _getPageRoute(AdminHome());
+  //     case studentHome:
+  //       return _getPageRoute(StudentHome());
+  //     case addTest:
+  //       return _getPageRoute(AddTestView());
+  //     default:
+  //       return _getPageRoute(Load(
+  //         onTap: () {},
+  //       )); // You may want to create a NotFoundView for handling unknown routes
+  //   }
+  // }
+
+  // PageRoute _getPageRoute(Widget child) {
+  //   return MaterialPageRoute(
+  //     builder: (context) => child,
+  //   );
+  // }
   static List<PageModel> routes() {
     return [
-      const PageModel(route: initial, page: AuthView()),
-      const PageModel(route: adminHome, page: AdminHome()),
-      const PageModel(route: studentHome, page: StudentHome()),
+      PageModel(route: initial, page: AuthView()),
+      PageModel(route: adminHome, page: AdminHome()),
+      PageModel(route: studentHome, page: StudentHome()),
       PageModel(route: addTest, page: AddTestView()),
     ];
   }

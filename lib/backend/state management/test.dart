@@ -1,5 +1,4 @@
 import 'dart:async';
-// import 'dart:core';
 
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,29 +23,35 @@ class TestCubit extends Cubit<TestState> {
   }
 
   void streamTestModel() {
-    // authModelSubscription = chatService.getAuthModel().listen((authModelList) {
-    //   // Update state with the filtered authModelList
-    //   setAuthModelList(authModelList);
-    // }, onError: (error) {
-    //   print('Error fetching authModel results: $error');
-    // });
+    testModelSubscription = testService.getTestModel().listen((testModel) {
+      // Update state with the filtered testModel
+      setTestModel(testModel);
+      debugPrint(testModel.toString());
+    }, onError: (error) {
+      debugPrint('Error fetching testModel results: $error');
+    });
   }
 
   void streamQuestionModel() {
-    // chatModelSubscription = chatService.getChatModel().listen((chatModelList) {
-    //   // Update state with the filtered ChatModelList
-    //   setChatModelList(chatModelList);
-    // }, onError: (error) {
-    //   print('Error fetching ChatModel results: $error');
-    // });
+    questionModelSubscription =
+        testService.getQuestionModel().listen((questionModel) {
+      // Update state with the filtered questionModel
+      setQuestionModel(questionModel);
+      debugPrint(testModel.toString());
+    }, onError: (error) {
+      debugPrint('Error fetching questionModel results: $error');
+    });
   }
+
   void streamOptionModel() {
-    // chatModelSubscription = chatService.getChatModel().listen((chatModelList) {
-    //   // Update state with the filtered ChatModelList
-    //   setChatModelList(chatModelList);
-    // }, onError: (error) {
-    //   print('Error fetching ChatModel results: $error');
-    // });
+    optionModelSubscription =
+        testService.getOptionModel().listen((optionModel) {
+      // Update state with the filtered optionModel
+      setOptionModel(optionModel);
+      debugPrint(testModel.toString());
+    }, onError: (error) {
+      debugPrint('Error fetching optionModel results: $error');
+    });
   }
 
   @override
@@ -136,9 +141,16 @@ class TestCubit extends Cubit<TestState> {
   }
 
   // setter
+  void setTestModel(List<TestModel> testModel) =>
+      emit(state.copyWith(testModel: testModel));
+  void setOptionModel(List<OptionModel> optionModel) =>
+      emit(state.copyWith(optionModel: optionModel));
+  void setQuestionModel(List<QuestionModel> questionModel) =>
+      emit(state.copyWith(questionModel: questionModel));
   void setTestId(String testId) => emit(state.copyWith(testId: testId));
   void setQuestionId(String questionId) =>
       emit(state.copyWith(questionId: questionId));
+  void setOptionId(String optionId) => emit(state.copyWith(optionId: optionId));
   void setTestName(String testName) => emit(state.copyWith(testName: testName));
   void setTestDescription(String testDescription) =>
       emit(state.copyWith(testDescription: testDescription));
@@ -183,8 +195,12 @@ class TestCubit extends Cubit<TestState> {
   void setIsRight(bool isRight) => emit(state.copyWith(isRight: isRight));
 
   // getter
+  List<TestModel> get testModel => state.testModel;
+  List<QuestionModel> get questionModel => state.questionModel;
+  List<OptionModel> get optionModel => state.optionModel;
   String get testId => state.testId;
   String get questionId => state.questionId;
+  String get optionId => state.optionId;
   String get testName => state.testName;
   String get testDescription => state.testDescription;
   int get testTimeStamp => state.testTimeStamp;
@@ -214,15 +230,14 @@ class TestCubit extends Cubit<TestState> {
   void setError(String error) => emit(state.copyWith(error: error));
   void setStatus(Status status) => emit(state.copyWith(status: status));
 }
-Sure, you can add those fields to the `TestState` class like this:
 
-```dart
 class TestState extends Equatable {
   final List<TestModel> testModel;
   final List<QuestionModel> questionModel;
   final List<OptionModel> optionModel;
   final String testId;
   final String questionId;
+  final String optionId;
   final String testName;
   final String testDescription;
   final int testTimeStamp;
@@ -255,6 +270,7 @@ class TestState extends Equatable {
     this.optionModel = const [],
     this.testId = '',
     this.questionId = '',
+    this.optionId = '',
     this.testName = '',
     this.testDescription = '',
     this.testTimeStamp = 0,
@@ -289,6 +305,7 @@ class TestState extends Equatable {
         optionModel,
         testId,
         questionId,
+        optionId,
         testName,
         testDescription,
         testTimeStamp,
@@ -322,6 +339,7 @@ class TestState extends Equatable {
     List<OptionModel>? optionModel,
     String? testId,
     String? questionId,
+    String? optionId,
     String? testName,
     String? testDescription,
     int? testTimeStamp,
@@ -354,6 +372,7 @@ class TestState extends Equatable {
       optionModel: optionModel ?? this.optionModel,
       testId: testId ?? this.testId,
       questionId: questionId ?? this.questionId,
+      optionId: optionId ?? this.optionId,
       testName: testName ?? this.testName,
       testDescription: testDescription ?? this.testDescription,
       testTimeStamp: testTimeStamp ?? this.testTimeStamp,

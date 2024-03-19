@@ -33,6 +33,7 @@ dependencies:
   cloud_firestore: null
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
+  easy_search_bar:
   file_picker: ^6.1.1
   firebase_auth: null
   firebase_core: null

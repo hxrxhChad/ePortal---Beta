@@ -1,3 +1,4 @@
+// import 'package:exam/frontend/views/question.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,9 @@ class MyApp extends StatelessWidget {
 class App extends StatelessWidget {
   final String? authId;
   final String? admin;
-  const App({super.key, required this.authId, required this.admin});
+  App({super.key, required this.authId, required this.admin});
+
+  final Routes route = Routes();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,8 @@ class App extends StatelessWidget {
                   : Routes.studentHome
               : Routes.initial,
       onGenerateRoute: Routes.onGenerateRoute,
+      // navigatorKey: route.navigatorKey,
+      // home: QuestionView(),
     );
   }
 }

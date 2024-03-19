@@ -20,10 +20,11 @@ class AuthCubit extends Cubit<AuthState> {
       try {
         final uid = await authService.login(state.emailId, state.password);
         setAuthId(uid!);
-        setAdmin(admin);
         await shared.setShared('authId', uid);
         String newAdmin = await authService.getAdminFromFirestore(authId);
         await shared.setShared('admin', newAdmin);
+        setAdmin(newAdmin);
+
         debugPrint(uid);
         debugPrint(newAdmin);
         setStatus(Status.success);

@@ -7,3 +7,4 @@ export 'register.dart';
 export 'admin_home.dart';
 export 'add_test.dart';
 export 'student_home.dart';
+export 'test_detail.dart';

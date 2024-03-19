@@ -97,29 +97,32 @@ class TestService {
     await optionRef.set(data);
   }
 
-  // Stream<List<MessageModel>> getMessage(String chatId) {
-  //   return FirebaseFirestore.instance
-  //       .collection('messages')
-  //       .where('chatId', isEqualTo: chatId)
-  //       .orderBy('time', descending: true)
-  //       .snapshots()
-  //       .map((querySnapshot) {
-  //     return querySnapshot.docs.map((doc) {
-  //       // Retrieve readBy field from the document snapshot
-  //       List<String> readBy = List<String>.from(doc['readBy'] ?? []);
-
-  //       return MessageModel(
-  //         messageId: doc['messageId'],
-  //         chatId: doc['chatId'],
-  //         senderId: doc['senderId'],
-  //         time: doc['time'],
-  //         type: doc['type'],
-  //         content: doc['content'],
-  //         readBy: readBy,
-  //       );
-  //     }).toList();
-  //   });
-  // }
+  Stream<List<TestModel>> getTest(String testId) {
+    return FirebaseFirestore.instance
+        .collection('tests')
+        .where('testId', isEqualTo: testId)
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return TestModel(
+          testId: doc['testId'],
+          testName: doc['testName'],
+          testDescription: doc['testDescription'],
+          testTimeStamp: doc['testTimeStamp'],
+          testAuthor: doc['testAuthor'],
+          testParticipants: List<String>.from(doc['testParticipants']),
+          testCode: doc['testCode'],
+          testDate: doc['testDates'],
+          testSyllabus: doc['testSyllabus'],
+          testEligibilityDetails: doc['testEligibilityDetails'],
+          testFeedback: List<String>.from(doc['testFeedback']),
+          testResultDate: doc['testResultDate'],
+          testAnswerSheet: doc['testAnswerSheet'],
+          // Add mapping for other fields as required
+        );
+      }).toList();
+    });
+  }
 
   Stream<List<TestModel>> getTestModel() {
     return FirebaseFirestore.instance
